@@ -6,6 +6,7 @@ import RunSearch from "~/requests/runs/RunSearch";
 import RunRetry from "~/requests/runs/RunRetry";
 import RunSignal from "~/requests/runs/RunSignal";
 import RunShow from "~/requests/runs/RunShow";
+import ListenerConfig from "~/interfaces/ListenerConfig";
 
 export const client = {
     jobs: {
@@ -22,4 +23,8 @@ export const client = {
         signal: (runId: number) => new RunSignal(runId),
         retry: (runId: number) => new RunRetry(runId),
     }
+}
+
+export function cleanup(listener: ListenerConfig): void {
+    listener.handler.stopHandling(listener.listenerId);
 }

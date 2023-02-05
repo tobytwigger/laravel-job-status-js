@@ -3,6 +3,7 @@ import Request from "~/client/Request";
 import handle from "~/client/ClientFactory";
 import {AxiosResponse, AxiosError} from "axios";
 import Notifier from "~/listener/Notifier";
+import ListenerConfig from "~/interfaces/ListenerConfig";
 
 export default class Poll implements Handler {
 
@@ -10,12 +11,15 @@ export default class Poll implements Handler {
 
     private loading: string[] = [];
 
-    handle(request: Request, handler: Notifier<any>): string {
+    handle(request: Request, handler: Notifier<any>): ListenerConfig {
         let listenerId = setInterval(() => {
             this.handleRun(request, handler)
         }, 5000).toString();
         this._ids.push(listenerId);
-        return listenerId;
+        return {
+            listenerId: listenerId,
+            handler: this
+        };
     }
 
     stopHandling(handleId: string): void {
