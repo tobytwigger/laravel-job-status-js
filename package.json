@@ -1,5 +1,5 @@
 {
-    "name": "@tobytwigger/laravel-job-status-vue",
+    "name": "@tobytwigger/laravel-job-status-js",
     "version": "0.0.1",
     "description": "A Vue integration for the Laravel Job Status package",
     "main": "dist/index.js",
@@ -9,10 +9,8 @@
         "php",
         "job",
         "queue",
-        "vuejs",
         "laravel",
-        "database",
-        "vue"
+        "database"
     ],
     "scripts": {
         "test": "jest --config jestconfig.json",
@@ -23,14 +21,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/ElbowSpaceUK/laravel-job-status-vue.git"
+        "url": "https://github.com/ElbowSpaceUK/laravel-job-status-js.git"
     },
     "author": "Toby Twigger <tobytwigger1@gmail.com>",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/ElbowSpaceUK/laravel-job-status-vue/issues"
+        "url": "https://github.com/ElbowSpaceUK/laravel-job-status-js/issues"
     },
-    "homepage": "https://github.com/ElbowSpaceUK/laravel-job-status-vue#readme",
+    "homepage": "https://github.com/ElbowSpaceUK/laravel-job-status-js#readme",
     "files": [
         "dist/**/*"
     ],
@@ -56,7 +54,6 @@
     },
     "peerDependencies": {
         "axios": "*",
-        "vue": "^2.0"
     },
     "dependencies": {
         "uuid": "^9.0.0"
