@@ -1,7 +1,7 @@
 import Handler from "~/interfaces/Handler";
 import Request from "~/client/Request";
 import handle from "~/client/ClientFactory";
-import {AxiosResponse} from "axios";
+import {AxiosResponse, AxiosError} from "axios";
 import Notifier from "~/listener/Notifier";
 
 export default class Poll implements Handler {
@@ -34,7 +34,7 @@ export default class Poll implements Handler {
             .then((response: AxiosResponse) => {
                 handler.triggerUpdated(response.data);
             })
-            .catch((error: Error) => {
+            .catch((error: AxiosError) => {
                 handler.triggerErrored(error);
             }).finally(() => {
                 handler.triggerFinishingUpdate()

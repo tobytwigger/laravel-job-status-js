@@ -4,11 +4,16 @@ import {JobRun} from "~/interfaces/models/JobRun";
 import {resolveHandler} from "~/listener/HandlerManager";
 import handle from "~/client/ClientFactory";
 
-export default class JobList extends RequestFactory<JobRun[]> {
+export default class RunRetry extends RequestFactory<void> {
 
+    constructor(private runId: number) {
+        super();
+    }
 
     public create(): Request {
-        return new Request("/jobs", "GET");
+        return new Request(
+            "/runs/" + this.runId.toString() + "/retry",
+            "POST");
     }
 
 }

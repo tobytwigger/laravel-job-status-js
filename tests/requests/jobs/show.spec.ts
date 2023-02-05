@@ -1,5 +1,5 @@
 // // const {client} = require('./../../../index');
-// // const JobList = require('./../../../requests/jobs/jobList');
+// // const BatchSearch = require('./../../../requests/jobs/jobList');
 // // const RequestType = require('./../../../client/Request');
 //
 // it('request object can be validly created', () => {

@@ -1,6 +1,7 @@
 import Request from "~/client/Request";
 import {resolveHandler} from "~/listener/HandlerManager";
 import {v4 as uuidv4} from 'uuid';
+import { AxiosError } from "axios";
 
 export default class Notifier<ModelType> {
 
@@ -90,15 +91,15 @@ export default class Notifier<ModelType> {
     }
 
 
-    private _onErrored: Array<(error: Error) => void> = [];
+    private _onErrored: Array<(error: AxiosError) => void> = [];
 
-    public onErrored(handler: (error: Error) => void): Notifier<ModelType> {
+    public onErrored(handler: (error: AxiosError) => void): Notifier<ModelType> {
         this._onErrored.push(handler);
 
         return this;
     }
 
-    public triggerErrored(error: Error): void
+    public triggerErrored(error: AxiosError): void
     {
         for(let callback of this._onErrored) {
             callback(error);

@@ -4,19 +4,11 @@ import {JobRun} from "~/interfaces/models/JobRun";
 import {resolveHandler} from "~/listener/HandlerManager";
 import handle from "~/client/ClientFactory";
 
-export default class JobShow extends RequestFactory<JobRun> {
+export default class RunSearch extends RequestFactory<JobRun[]> {
 
-    constructor(private jobId: number) {
-        super();
-    }
 
     public create(): Request {
-        return new Request(
-            "/jobs/" + this.jobId.toString(),
-            "GET"
-        );
+        return new Request("/runs", "GET");
     }
-
-
 
 }
