@@ -6,16 +6,28 @@ import handle from "~/client/ClientFactory";
 
 export default class RunSignal extends RequestFactory<void> {
 
-    constructor(private runId: number) {
+    private _shouldCancelJob: boolean = false;
+
+    constructor(private runId: number, private signal: string) {
         super();
     }
 
     public create(): Request {
-        return new Request(
+        let request = new Request(
             "/runs/" + this.runId.toString() + "/signal",
-            "POST");
+            "POST"
+        );
+        request.data = {
+            signal: this.signal,
+            cancel_job: this._shouldCancelJob,
+        };
+        return request;
     }
 
+    public shouldCancelJob(): RequestFactory<void> {
+        this._shouldCancelJob = true;
 
+        return this;
+    }
 
 }

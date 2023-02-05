@@ -6,11 +6,12 @@ import RunSearch from "~/requests/runs/RunSearch";
 import RunRetry from "~/requests/runs/RunRetry";
 import RunSignal from "~/requests/runs/RunSignal";
 import RunShow from "~/requests/runs/RunShow";
+import RunCancel from "~/requests/runs/RunCancel";
 
 export const client = {
     jobs: {
         search: () => new JobSearch(),
-        show: (jobId: number) => new JobShow(jobId)
+        show: (alias: string) => new JobShow(alias)
     },
     batches: {
         search: () => new BatchSearch(),
@@ -19,7 +20,8 @@ export const client = {
     runs: {
         search: () => new RunSearch(),
         show: (runId: number) => new RunShow(runId),
-        signal: (runId: number) => new RunSignal(runId),
+        signal: (runId: number, signal: string) => new RunSignal(runId, signal),
         retry: (runId: number) => new RunRetry(runId),
+        cancel: (runId: number) => new RunCancel(runId)
     }
 }

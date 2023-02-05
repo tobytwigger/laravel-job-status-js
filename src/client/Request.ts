@@ -12,6 +12,7 @@ export default class Request
 
     private _method: Method;
 
+    private _data: {[key: string]: any} = {};
 
     get url(): string {
         return this._url;
@@ -27,5 +28,14 @@ export default class Request
 
     set method(value: Method) {
         this._method = value;
+    }
+
+
+    get data(): { [p: string]: any } {
+        return this._data;
+    }
+
+    set data(value: { [p: string]: any }) {
+        this._data = value;
     }
 }

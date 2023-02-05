@@ -7,13 +7,13 @@ import {TrackedJob} from "~/interfaces/models/TrackedJob";
 
 export default class JobShow extends RequestFactory<TrackedJob> {
 
-    constructor(private jobId: number) {
+    constructor(private alias: string) {
         super();
     }
 
     public create(): Request {
         return new Request(
-            "/jobs/" + this.jobId.toString(),
+            "/jobs/" + this.alias,
             "GET"
         );
     }
