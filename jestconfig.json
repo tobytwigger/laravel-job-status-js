@@ -8,9 +8,7 @@
     "moduleNameMapper": {
         "~/(.*)": "<rootDir>/src/$1"
     },
-    "transform": {
-        "^.+\\.tsx?$": "ts-jest"
-    },
+    "transform": {},
     "testRegex": "(/../tests/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "testEnvironment": "jsdom",
     "clearMocks": true

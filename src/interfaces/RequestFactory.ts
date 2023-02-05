@@ -1,19 +1,18 @@
 import Request from "~/client/Request";
-import {JobRun} from "~/interfaces/models/JobRun";
-import {resolveHandler} from "~/handler/HandlerManager";
 import handle from "~/client/ClientFactory";
-import Notifier from "~/handler/Notifier";
+import Notifier from "~/listener/Notifier";
+import {AxiosPromise} from "axios";
 
 export default abstract class RequestFactory<ReturnType> {
 
-    abstract create(): Request
+    abstract create(): Request;
 
     public listen(): Notifier<ReturnType> {
-        return new Notifier<ReturnType>();
+        return new Notifier<ReturnType>(this.create());
     }
 
-    public get(): Promise<ReturnType> {
-        return handle(this.create()) as Promise<ReturnType>;
+    public send(): AxiosPromise<ReturnType> {
+        return handle(this.create()) as AxiosPromise<ReturnType>;
     }
 
 }
