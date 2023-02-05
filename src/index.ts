@@ -24,7 +24,3 @@ export const client = {
         retry: (runId: number) => new RunRetry(runId),
     }
 }
-
-export function cleanup(listener: ListenerConfig): void {
-    listener.handler.stopHandling(listener.listenerId);
-}
