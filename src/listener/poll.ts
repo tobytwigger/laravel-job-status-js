@@ -14,8 +14,9 @@ export default class Poll implements Handler {
     handle(request: Request, handler: Notifier<any>): Listener {
         let listenerId = setInterval(() => {
             this.handleRun(request, handler)
-        }, 5000).toString();
+        }, 2000).toString();
         this._ids.push(listenerId);
+        this.handleRun(request, handler);
         return new Listener(
             listenerId,
             (listenerId: string) => {
