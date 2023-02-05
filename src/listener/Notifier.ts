@@ -2,6 +2,7 @@ import Request from "~/client/Request";
 import {resolveHandler} from "~/listener/HandlerManager";
 import {v4 as uuidv4} from 'uuid';
 import { AxiosError } from "axios";
+import Listener from "~/listener/Listener";
 
 export default class Notifier<ModelType> {
 
@@ -106,7 +107,7 @@ export default class Notifier<ModelType> {
         }
     }
 
-    public start(): string
+    public start(): Listener
     {
         let handler = resolveHandler(this._request);
         return handler.handle(this._request, this);
