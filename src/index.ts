@@ -7,11 +7,17 @@ import RunRetry from "~/requests/runs/RunRetry";
 import RunSignal from "~/requests/runs/RunSignal";
 import RunShow from "~/requests/runs/RunShow";
 import RunCancel from "~/requests/runs/RunCancel";
+import QueueSearch from "~/requests/queues/QueueSearch";
+import QueueShow from "~/requests/queues/QueueShow";
 
 export const client = {
     jobs: {
         search: () => new JobSearch(),
         show: (alias: string) => new JobShow(alias)
+    },
+    queues: {
+        search: () => new QueueSearch(),
+        show: (queue: string) => new QueueShow(queue)
     },
     batches: {
         search: () => new BatchSearch(),
