@@ -5,4 +5,10 @@ export interface TrackedJob {
     alias: string;
     runs: JobRun[];
     count: number;
+    failure_reasons: JobFailureReason[]
+}
+
+export interface JobFailureReason {
+    message: string;
+    count: number;
 }
