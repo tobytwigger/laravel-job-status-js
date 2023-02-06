@@ -7,12 +7,23 @@ export default abstract class RequestFactory<ReturnType> {
 
     abstract create(): Request;
 
+    protected _bypassAuth: boolean = false;
+
     public listen(): Notifier<ReturnType> {
-        return new Notifier<ReturnType>(this.create());
+        let request = this.create();
+        request.bypassAuth = this._bypassAuth;
+        return new Notifier<ReturnType>(request);
+    }
+
+    public bypassAuth(): RequestFactory<ReturnType> {
+        this._bypassAuth = true;
+        return this;
     }
 
     public send(): AxiosPromise<ReturnType> {
-        return handle(this.create()) as AxiosPromise<ReturnType>;
+        let request = this.create();
+        request.bypassAuth = this._bypassAuth;
+        return handle(request) as AxiosPromise<ReturnType>;
     }
 
 }

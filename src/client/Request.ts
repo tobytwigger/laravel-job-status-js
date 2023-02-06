@@ -12,7 +12,17 @@ export default class Request
 
     private _method: Method;
 
+    private _bypassAuth: boolean = false;
+
     private _data: {[key: string]: any} = {};
+
+    get bypassAuth(): boolean {
+        return this._bypassAuth;
+    }
+
+    set bypassAuth(value: boolean) {
+        this._bypassAuth = value;
+    }
 
     get url(): string {
         return this._url;

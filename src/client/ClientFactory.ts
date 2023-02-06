@@ -18,6 +18,11 @@ export default function handle(request: Request): AxiosPromise<unknown> {
     if(Object.keys(data).length > 0) {
         config.data = data;
     }
+    if(request.bypassAuth) {
+        config.params = Object.assign((config.params || {}), {
+            bypassAuth: request.bypassAuth
+        });
+    }
     return axios.request(config);
 
 
