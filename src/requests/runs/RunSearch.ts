@@ -1,13 +1,13 @@
 import RequestFactory from "~/interfaces/RequestFactory";
 import Request from "~/client/Request";
 import {JobRun} from "~/interfaces/models/JobRun";
-import {resolveHandler} from "~/listener/HandlerManager";
-import handle from "~/client/ClientFactory";
 import {PaginationParams, PaginationResponse} from "~/interfaces/PaginationResponse";
 
 interface SearchParams {
     alias?: string[],
     status?: string[],
+    batchId?: number[],
+    queue?: string[]
 }
 
 export default class RunSearch extends RequestFactory<PaginationResponse<JobRun>> {
@@ -15,6 +15,10 @@ export default class RunSearch extends RequestFactory<PaginationResponse<JobRun>
     protected _alias: string[] = [];
 
     protected _status: string[] = [];
+
+    protected _batchId: number[] = [];
+
+    protected _queue: string[] = [];
 
     private _page : number = 1;
 
@@ -44,6 +48,18 @@ export default class RunSearch extends RequestFactory<PaginationResponse<JobRun>
         return this;
     }
 
+    public whereBatchId(batchId: number): RunSearch {
+        this._batchId.push(batchId);
+
+        return this;
+    }
+
+    public whereQueue(queue: string): RunSearch {
+        this._queue.push(queue);
+
+        return this;
+    }
+
     public create(): Request {
         let request = new Request("/runs", "GET");
         let params: SearchParams & PaginationParams = {
@@ -55,6 +71,12 @@ export default class RunSearch extends RequestFactory<PaginationResponse<JobRun>
         }
         if(this._status) {
             params.status = this._status;
+        }
+        if(this._batchId) {
+            params.batchId = this._batchId;
+        }
+        if(this._queue) {
+            params.queue = this._queue;
         }
         request.params = params;
         return request;
