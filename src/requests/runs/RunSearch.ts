@@ -12,7 +12,7 @@ export default class RunSearch extends RequestFactory<JobRun[]> {
 
     protected _alias: string|null = null;
 
-    public whereAlias(alias: string): RequestFactory<JobRun[]> {
+    public whereAlias(alias: string): RunSearch {
         this._alias = alias;
 
         return this;
