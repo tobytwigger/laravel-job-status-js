@@ -3,13 +3,14 @@ import Request from "~/client/Request";
 import {JobRun} from "~/interfaces/models/JobRun";
 import {resolveHandler} from "~/listener/HandlerManager";
 import handle from "~/client/ClientFactory";
+import {PaginationResponse} from "~/interfaces/PaginationResponse";
 
 interface SearchParams {
     alias?: string[],
     status?: string[],
 }
 
-export default class RunSearch extends RequestFactory<JobRun[]> {
+export default class RunSearch extends RequestFactory<PaginationResponse<JobRun>> {
 
     protected _alias: string[] = [];
 

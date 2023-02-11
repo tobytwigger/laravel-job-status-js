@@ -5,8 +5,9 @@ import {resolveHandler} from "~/listener/HandlerManager";
 import handle from "~/client/ClientFactory";
 import {TrackedJob} from "~/interfaces/models/TrackedJob";
 import {Queue} from "~/interfaces/models/Queue";
+import {PaginationResponse} from "~/interfaces/PaginationResponse";
 
-export default class QueueSearch extends RequestFactory<Queue[]> {
+export default class QueueSearch extends RequestFactory<PaginationResponse<Queue>> {
 
 
     public create(): Request {

@@ -4,8 +4,9 @@ import {JobRun} from "~/interfaces/models/JobRun";
 import {resolveHandler} from "~/listener/HandlerManager";
 import handle from "~/client/ClientFactory";
 import {TrackedJob} from "~/interfaces/models/TrackedJob";
+import {PaginationResponse} from "~/interfaces/PaginationResponse";
 
-export default class JobSearch extends RequestFactory<TrackedJob[]> {
+export default class JobSearch extends RequestFactory<PaginationResponse<TrackedJob>> {
 
 
     public create(): Request {
