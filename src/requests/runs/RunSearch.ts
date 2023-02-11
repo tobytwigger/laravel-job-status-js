@@ -4,11 +4,28 @@ import {JobRun} from "~/interfaces/models/JobRun";
 import {resolveHandler} from "~/listener/HandlerManager";
 import handle from "~/client/ClientFactory";
 
+interface SearchParams {
+    alias?: string,
+}
+
 export default class RunSearch extends RequestFactory<JobRun[]> {
 
+    protected _alias: string|null = null;
+
+    public whereAlias(alias: string): RequestFactory<JobRun[]> {
+        this._alias = alias;
+
+        return this;
+    }
 
     public create(): Request {
-        return new Request("/runs", "GET");
+        let request = new Request("/runs", "GET");
+        let searchParams: SearchParams = {};
+        if(this._alias) {
+            searchParams.alias = this._alias;
+        }
+        request.params = searchParams;
+        return request;
     }
 
 }

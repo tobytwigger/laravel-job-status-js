@@ -16,6 +16,8 @@ export default class Request
 
     private _data: {[key: string]: any} = {};
 
+    private _params: {[key: string]: any} = {};
+
     get bypassAuth(): boolean {
         return this._bypassAuth;
     }
@@ -47,5 +49,13 @@ export default class Request
 
     set data(value: { [p: string]: any }) {
         this._data = value;
+    }
+
+    get params(): { [p: string]: any } {
+        return this._params;
+    }
+
+    set params(value: { [p: string]: any }) {
+        this._params = value;
     }
 }
