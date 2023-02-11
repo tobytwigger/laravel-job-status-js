@@ -5,24 +5,24 @@ import {resolveHandler} from "~/listener/HandlerManager";
 import handle from "~/client/ClientFactory";
 
 interface SearchParams {
-    alias?: string,
-    status?: string,
+    alias?: string[],
+    status?: string[],
 }
 
 export default class RunSearch extends RequestFactory<JobRun[]> {
 
-    protected _alias: string|null = null;
+    protected _alias: string[] = [];
 
-    protected _status: string|null = null;
+    protected _status: string[] = [];
 
     public whereAlias(alias: string): RunSearch {
-        this._alias = alias;
+        this._alias.push(alias);
 
         return this;
     }
 
     public whereStatus(status: string): RunSearch {
-        this._status = status;
+        this._status.push(status);
 
         return this;
     }
