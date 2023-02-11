@@ -6,14 +6,23 @@ import handle from "~/client/ClientFactory";
 
 interface SearchParams {
     alias?: string,
+    status?: string,
 }
 
 export default class RunSearch extends RequestFactory<JobRun[]> {
 
     protected _alias: string|null = null;
 
+    protected _status: string|null = null;
+
     public whereAlias(alias: string): RunSearch {
         this._alias = alias;
+
+        return this;
+    }
+
+    public whereStatus(status: string): RunSearch {
+        this._status = status;
 
         return this;
     }
@@ -23,6 +32,9 @@ export default class RunSearch extends RequestFactory<JobRun[]> {
         let searchParams: SearchParams = {};
         if(this._alias) {
             searchParams.alias = this._alias;
+        }
+        if(this._status) {
+            searchParams.status = this._status;
         }
         request.params = searchParams;
         return request;
