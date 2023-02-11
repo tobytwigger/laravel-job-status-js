@@ -13,3 +13,8 @@ export interface PaginationResponse<DataType> {
     to: number;
     total: number;
 }
+
+export interface PaginationParams {
+    page?: number;
+    per_page?: number;
+}
