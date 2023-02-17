@@ -13,7 +13,7 @@ export default class JobShow extends RequestFactory<TrackedJob> {
 
     public create(): Request {
         return new Request(
-            "/jobs/" + this.alias,
+            "/jobs/" + encodeURIComponent(this.alias),
             "GET"
         );
     }
