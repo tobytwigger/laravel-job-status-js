@@ -1,9 +1,10 @@
-import Handler from "~/interfaces/Handler";
-import Request from "~/client/Request";
+import {AxiosError, AxiosResponse} from "axios";
 import handle from "~/client/ClientFactory";
-import {AxiosResponse, AxiosError} from "axios";
-import Notifier from "~/listener/Notifier";
+import Request from "~/client/Request";
+import Handler from "~/interfaces/Handler";
 import Listener from "~/listener/Listener";
+import Notifier from "~/listener/Notifier";
+import {AbortControllerManager} from "~/listener/poll/AbortControllerManager";
 
 export default class Poll implements Handler {
 
@@ -11,8 +12,12 @@ export default class Poll implements Handler {
 
     private loading: string[] = [];
 
+    private controllerManager: AbortControllerManager = new AbortControllerManager();
+
+    private controllers: AbortController[] = [];
+
     handle(request: Request, handler: Notifier<any>): Listener {
-        let listenerId = setInterval(() => {
+        const listenerId = setInterval(() => {
             this.handleRun(request, handler)
         }, 2000).toString();
         this._ids.push(listenerId);
@@ -31,13 +36,16 @@ export default class Poll implements Handler {
     }
 
     private handleRun(request: Request, handler: Notifier<any>) {
-        let isFirstLoad: boolean = !this.loading.includes(handler.id);
+        const isFirstLoad: boolean = !this.loading.includes(handler.id);
         if(isFirstLoad) {
             this.loading.push(handler.id);
             handler.triggerStartingInitialLoad();
         }
+        this.controllerManager.abortAll();
         handler.triggerStartingUpdate();
-        handle(request)
+        handle(request, {
+            controller: this.controllerManager.create(2000)
+        })
             .then((response: AxiosResponse) => {
                 handler.triggerUpdated(response.data);
             })
