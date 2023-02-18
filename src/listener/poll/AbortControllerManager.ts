@@ -14,5 +14,6 @@ export class AbortControllerManager {
         for(const controller of this._controllers) {
             controller.abort();
         }
+        this._controllers = [];
     }
 }

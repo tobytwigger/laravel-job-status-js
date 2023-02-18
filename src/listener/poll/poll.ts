@@ -32,7 +32,6 @@ export default class Poll implements Handler {
 
     stopHandling(handleId: string): void {
         clearInterval(handleId);
-
     }
 
     private handleRun(request: Request, handler: Notifier<any>) {
