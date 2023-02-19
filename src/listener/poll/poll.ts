@@ -5,7 +5,7 @@ import Handler from "~/interfaces/Handler";
 import Listener from "~/listener/Listener";
 import Notifier from "~/listener/Notifier";
 import {AbortControllerManager} from "~/listener/poll/AbortControllerManager";
-import semverGte from "semver/functions/gte";
+const semverGte = require('semver/functions/gte');
 import {CancelTokenManager} from "~/listener/poll/CancelTokenManager";
 
 export default class Poll implements Handler {
