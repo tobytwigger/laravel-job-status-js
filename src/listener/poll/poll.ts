@@ -43,6 +43,7 @@ export default class Poll implements Handler {
         if(this.loading.includes(handler.id)) {
             return;
         }
+        this.loading.push(handler.id);
 
         // Trigger initial load
         const isFirstLoad: boolean = !this.firstLoad.includes(handler.id);
