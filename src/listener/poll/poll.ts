@@ -12,9 +12,7 @@ export default class Poll implements Handler {
 
     private loading: string[] = [];
 
-    private controllerManager: AbortControllerManager = new AbortControllerManager();
-
-    private controllers: AbortController[] = [];
+    private controllerManager: AbortControllerManager = AbortControllerManager.getInstance();
 
     handle(request: Request, handler: Notifier<any>): Listener {
         const listenerId = setInterval(() => {
@@ -40,10 +38,10 @@ export default class Poll implements Handler {
             this.loading.push(handler.id);
             handler.triggerStartingInitialLoad();
         }
-        this.controllerManager.abortAll();
+        this.controllerManager.abortAll(handler.id);
         handler.triggerStartingUpdate();
         handle(request, {
-            controller: this.controllerManager.create(2000)
+            controller: this.controllerManager.create(handler.id, 2000)
         })
             .then((response: AxiosResponse) => {
                 handler.triggerUpdated(response.data);
