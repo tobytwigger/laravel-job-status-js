@@ -36,7 +36,6 @@
         "@babel/types": "^7.17.0",
         "@jest/types": "^27.5.1",
         "@types/jest": "^27.4.0",
-        "@types/semver": "^7.3.13",
         "@types/uuid": "^9.0.0",
         "axios": "^1.0.0",
         "jest": "^27.5.1",

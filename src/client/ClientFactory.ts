@@ -1,4 +1,4 @@
-import axios, {AxiosPromise, AxiosRequestConfig, CancelTokenSource} from "axios";
+import axios, {AxiosPromise, AxiosRequestConfig} from "axios";
 import Request from "~/client/Request";
 import {baseUrl} from "~/config/config";
 
