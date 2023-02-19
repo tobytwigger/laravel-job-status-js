@@ -1,28 +1,21 @@
-import axios, {AxiosError, AxiosResponse, AxiosRequestConfig} from "axios";
+import axios, {AxiosError, AxiosResponse} from "axios";
 import handle, {ClientOptions} from "~/client/ClientFactory";
 import Request from "~/client/Request";
 import Handler from "~/interfaces/Handler";
 import Listener from "~/listener/Listener";
 import Notifier from "~/listener/Notifier";
 import {AbortControllerManager} from "~/listener/poll/AbortControllerManager";
-const semverGte = require('semver/functions/gte');
-import {CancelTokenManager} from "~/listener/poll/CancelTokenManager";
 
 export default class Poll implements Handler {
-
-    private _ids: string[] = [];
 
     private loading: string[] = [];
 
     private controllerManager: AbortControllerManager = AbortControllerManager.getInstance();
 
-    private cancelTokenManager: CancelTokenManager = CancelTokenManager.getInstance();
-
     handle(request: Request, handler: Notifier<any>): Listener {
         const listenerId = setInterval(() => {
             this.handleRun(request, handler)
         }, 2000).toString();
-        this._ids.push(listenerId);
         this.handleRun(request, handler);
         return new Listener(
             listenerId,
@@ -45,14 +38,13 @@ export default class Poll implements Handler {
         }
 
         // Trigger standard load
-        this.cancelPendingRequests(handler.id);
+        this.controllerManager.abortAll(handler.id);
         handler.triggerStartingUpdate();
 
         // Build request config
-        let config: ClientOptions = {};
-        config.controller = semverGte(axios.VERSION, '0.22.0')
-            ? this.controllerManager.create(handler.id)
-            : this.cancelTokenManager.create(handler.id);
+        let config: ClientOptions = {
+            controller: this.controllerManager.create(handler.id)
+        };
 
         // Handle request
         handle(request, config)
@@ -69,11 +61,4 @@ export default class Poll implements Handler {
             });
     }
 
-    private cancelPendingRequests(handlerId: string) {
-        if(semverGte(axios.VERSION, '0.22.0')) {
-            this.controllerManager.abortAll(handlerId);
-        } else {
-            controller: this.cancelTokenManager.abortAll(handlerId)
-        }
-    }
 }
