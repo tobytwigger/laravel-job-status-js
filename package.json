@@ -36,8 +36,9 @@
         "@babel/types": "^7.17.0",
         "@jest/types": "^27.5.1",
         "@types/jest": "^27.4.0",
+        "@types/semver": "^7.3.13",
         "@types/uuid": "^9.0.0",
-        "axios": "^0.26",
+        "axios": "^1.0.0",
         "jest": "^27.5.1",
         "jest-mock-axios": "^4.5.0",
         "jsdoc": "^4.0.1",
@@ -56,6 +57,7 @@
         "axios": "*"
     },
     "dependencies": {
+        "semver": "^7.3.8",
         "uuid": "^9.0.0"
     }
 }

@@ -1,9 +1,9 @@
-import axios, {AxiosPromise, AxiosRequestConfig} from "axios";
+import axios, {AxiosPromise, AxiosRequestConfig, CancelTokenSource} from "axios";
 import Request from "~/client/Request";
 import {baseUrl} from "~/config/config";
 
-interface ClientOptions {
-    controller?: AbortController
+export interface ClientOptions {
+    controller?: AbortController|CancelTokenSource
 }
 
 export default function handle(request: Request, options: ClientOptions = {}): AxiosPromise<unknown> {
@@ -28,7 +28,11 @@ export default function handle(request: Request, options: ClientOptions = {}): A
         });
     }
     if(options.controller) {
-        config.signal = options.controller.signal;
+        if(isAbortController(options.controller)) {
+            config.signal = options.controller.signal;
+        } else {
+            config.cancelToken = options.controller.token;
+        }
     }
     if(Object.keys(request.params).length > 0) {
         config.params = Object.assign((config.params || {}), request.params)
@@ -36,4 +40,8 @@ export default function handle(request: Request, options: ClientOptions = {}): A
     return axios.request(config);
 
 
+}
+
+function isAbortController(controller: AbortController|CancelTokenSource): controller is AbortController {
+    return 'signal' in controller;
 }

@@ -1,10 +1,12 @@
-import {AxiosError, AxiosResponse} from "axios";
-import handle from "~/client/ClientFactory";
+import axios, {AxiosError, AxiosResponse, AxiosRequestConfig} from "axios";
+import handle, {ClientOptions} from "~/client/ClientFactory";
 import Request from "~/client/Request";
 import Handler from "~/interfaces/Handler";
 import Listener from "~/listener/Listener";
 import Notifier from "~/listener/Notifier";
 import {AbortControllerManager} from "~/listener/poll/AbortControllerManager";
+import semverGte from "semver/functions/gte";
+import {CancelTokenManager} from "~/listener/poll/CancelTokenManager";
 
 export default class Poll implements Handler {
 
@@ -13,6 +15,8 @@ export default class Poll implements Handler {
     private loading: string[] = [];
 
     private controllerManager: AbortControllerManager = AbortControllerManager.getInstance();
+
+    private cancelTokenManager: CancelTokenManager = CancelTokenManager.getInstance();
 
     handle(request: Request, handler: Notifier<any>): Listener {
         const listenerId = setInterval(() => {
@@ -33,16 +37,25 @@ export default class Poll implements Handler {
     }
 
     private handleRun(request: Request, handler: Notifier<any>) {
+        // Trigger initial load
         const isFirstLoad: boolean = !this.loading.includes(handler.id);
         if(isFirstLoad) {
             this.loading.push(handler.id);
             handler.triggerStartingInitialLoad();
         }
-        this.controllerManager.abortAll(handler.id);
+
+        // Trigger standard load
+        this.cancelPendingRequests(handler.id);
         handler.triggerStartingUpdate();
-        handle(request, {
-            controller: this.controllerManager.create(handler.id, 2000)
-        })
+
+        // Build request config
+        let config: ClientOptions = {};
+        config.controller = semverGte(axios.VERSION, '0.22.0')
+            ? this.controllerManager.create(handler.id)
+            : this.cancelTokenManager.create(handler.id);
+
+        // Handle request
+        handle(request, config)
             .then((response: AxiosResponse) => {
                 handler.triggerUpdated(response.data);
             })
@@ -54,5 +67,13 @@ export default class Poll implements Handler {
                     handler.triggerFinishingInitialLoad();
                 }
             });
+    }
+
+    private cancelPendingRequests(handlerId: string) {
+        if(semverGte(axios.VERSION, '0.22.0')) {
+            this.controllerManager.abortAll(handlerId);
+        } else {
+            controller: this.cancelTokenManager.abortAll(handlerId)
+        }
     }
 }
