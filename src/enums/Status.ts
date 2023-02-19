@@ -4,4 +4,5 @@ export enum Status {
     Cancelled = 'cancelled',
     Failed = 'failed',
     Succeeded = 'succeeded',
+    Released = 'released'
 }
