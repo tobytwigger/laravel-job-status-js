@@ -3,9 +3,13 @@ import {JobRun} from "~/interfaces/models/JobRun";
 export interface TrackedJob {
     class: string;
     alias: string;
-    runs: JobRun[];
     count: number;
-    failure_reasons: JobFailureReason[]
+    failure_reasons: JobFailureReason[];
+    successful: number;
+    failed: number;
+    started: number;
+    queued: number;
+    cancelled: number;
 }
 
 export interface JobFailureReason {

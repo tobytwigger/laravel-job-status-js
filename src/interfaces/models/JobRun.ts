@@ -29,4 +29,6 @@ export interface JobRun {
     connection_name: string | null;
 
     queue: string | null;
+
+    released_runs: JobRun[];
 }
