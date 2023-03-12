@@ -7,7 +7,8 @@ interface SearchParams {
     alias?: string[],
     status?: string[],
     batchId?: number[],
-    queue?: string[]
+    queue?: string[],
+    tags?: {[key: string]: string|number}
 }
 
 export default class RunSearch extends RequestFactory<PaginationResponse<JobRun>> {
@@ -19,6 +20,8 @@ export default class RunSearch extends RequestFactory<PaginationResponse<JobRun>
     protected _batchId: number[] = [];
 
     protected _queue: string[] = [];
+
+    protected _tags: {[key: string]: string|number} = {};
 
     private _page : number = 1;
 
@@ -60,6 +63,12 @@ export default class RunSearch extends RequestFactory<PaginationResponse<JobRun>
         return this;
     }
 
+    public whereTag(key: string, value: string|number): RunSearch {
+        this._tags[key] = value;
+
+        return this;
+    }
+
     public create(): Request {
         let request = new Request("/runs", "GET");
         let params: SearchParams & PaginationParams = {
@@ -77,6 +86,9 @@ export default class RunSearch extends RequestFactory<PaginationResponse<JobRun>
         }
         if(this._queue) {
             params.queue = this._queue;
+        }
+        if(this._tags) {
+            params.tags = this._tags;
         }
         request.params = params;
         return request;
